@@ -12,20 +12,11 @@ class GooseGame {
 
     private var currentPlayerIndex: Int = 0
 
+    fun getCurrentPlayer() = players[currentPlayerIndex]
 
-    @Throws(Exception::class)
-    fun start() {
-        if(players.isEmpty()) {
-            throw Exception("You cannot start a game without players!")
-        }
+    fun getPlayers() = players.toList()
 
-        val dice = Dice(2)
-        dices.clear()
-        dices.add(dice)
-        dices.add(dice)
-
-        currentPlayerIndex = 0
-    }
+    fun getPlayer(name: String) = players.first { it.name == name }
 
     /**
      * Add player to the game
@@ -42,17 +33,25 @@ class GooseGame {
         return true
     }
 
+    @Throws(Exception::class)
+    fun start() {
+        if(players.isEmpty()) {
+            throw Exception("You cannot start a game without players!")
+        }
+
+        val dice = Dice(2)
+        dices.clear()
+        dices.add(dice)
+        dices.add(dice)
+
+        currentPlayerIndex = 0
+    }
+
     fun throwDices() {
         val result = dices.sumOf { it.getResult() }
         getCurrentPlayer().position += result
         nextPlayer()
     }
-
-    fun getCurrentPlayer() = players[currentPlayerIndex]
-
-    fun getPlayers() = players.toList()
-
-    fun getPlayer(name: String) = players.first { it.name == name }
 
     private fun nextPlayer() {
         currentPlayerIndex = if(currentPlayerIndex >= players.size) {
