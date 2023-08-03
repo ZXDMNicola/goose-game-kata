@@ -8,6 +8,7 @@ package com.nicoladalmaso.goosegamekata
 class GooseGame {
 
     var players: ArrayList<Player> = arrayListOf()
+    var message: String? = null
 
     /**
      * Add player to the game
@@ -23,5 +24,15 @@ class GooseGame {
 
         return true
     }
+
+    fun throwDices(player: Player) {
+        val trow = throwDice() + throwDice()
+        val currentPosition = player.position
+        player.position += trow
+
+        message = "${player.name} moves from $currentPosition to ${player.position} "
+    }
+
+    private fun throwDice() =  (1..6).random()
 
 }

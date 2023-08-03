@@ -6,5 +6,6 @@ package com.nicoladalmaso.goosegamekata
  */
 
 data class Player(
-    var name: String
+    var name: String,
+    var position: Int = 0
 )
