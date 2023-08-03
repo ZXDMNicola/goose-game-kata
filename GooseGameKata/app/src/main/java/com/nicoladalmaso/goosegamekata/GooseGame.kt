@@ -52,6 +52,8 @@ class GooseGame {
 
     fun getPlayers() = players.toList()
 
+    fun getPlayer(name: String) = players.first { it.name == name }
+
     private fun nextPlayer() {
         currentPlayerIndex = if(currentPlayerIndex >= players.size) {
             0

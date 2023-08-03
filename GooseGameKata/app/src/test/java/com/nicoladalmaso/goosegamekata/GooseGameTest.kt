@@ -15,14 +15,23 @@ class GooseGameTest {
 
     private val player1Name = "Nicola"
     private val player2Name = "Anna"
+    private val player3Name = "Pippo"
 
     @Before
     fun setup() {
         sut = GooseGame()
+
+        sut.addPlayer(player1Name)
+        sut.addPlayer(player2Name)
+        sut.addPlayer(player3Name)
+
+        sut.start()
     }
 
     @Test
     fun addPlayer_Success() {
+        sut = GooseGame()
+
         assertThat(sut.addPlayer(player1Name)).isTrue()
         assertThat(sut.getPlayers()).hasSize(1)
         assertThat(sut.getPlayers().first().name).isEqualTo(player1Name)
@@ -30,6 +39,8 @@ class GooseGameTest {
 
     @Test
     fun addPlayer_Failure() {
+        sut = GooseGame()
+
         assertThat(sut.addPlayer(player1Name)).isTrue()
         assertThat(sut.addPlayer(player1Name)).isFalse()
         assertThat(sut.getPlayers()).hasSize(1)
@@ -37,6 +48,8 @@ class GooseGameTest {
 
     @Test
     fun startGame_Success() {
+        sut = GooseGame()
+
         sut.addPlayer(player1Name)
         sut.addPlayer(player2Name)
         sut.start()
@@ -46,6 +59,8 @@ class GooseGameTest {
 
     @Test
     fun startGame_FailWithoutPlayers() {
+        sut = GooseGame()
+
         try {
             sut.start()
             assertThat(true).isFalse()
@@ -53,8 +68,17 @@ class GooseGameTest {
     }
 
     @Test
-    fun throwDices_CheckResult() {
+    fun throwDices_IncreasePositionAndPassToNextPlayer() {
+        val player = sut.getCurrentPlayer()
+        val previousValue = player.position
 
+        sut.throwDices()
+
+        //Position increase
+        assertThat(player.position).isGreaterThan(previousValue)
+
+        //Passed to the next player
+        assertThat(sut.getCurrentPlayer()).isNotEqualTo(player)
     }
 
 }
