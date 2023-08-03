@@ -7,8 +7,25 @@ package com.nicoladalmaso.goosegamekata
 
 class GooseGame {
 
-    var players: ArrayList<Player> = arrayListOf()
-    var message: String? = null
+    private var players: ArrayList<Player> = arrayListOf()
+    private var dices: ArrayList<Dice> = arrayListOf()
+
+    private var currentPlayerIndex: Int = 0
+
+
+    @Throws(Exception::class)
+    fun start() {
+        if(players.isEmpty()) {
+            throw Exception("You cannot start a game without players!")
+        }
+
+        val dice = Dice(2)
+        dices.clear()
+        dices.add(dice)
+        dices.add(dice)
+
+        currentPlayerIndex = 0
+    }
 
     /**
      * Add player to the game
@@ -25,14 +42,22 @@ class GooseGame {
         return true
     }
 
-    fun throwDices(player: Player) {
-        val trow = throwDice() + throwDice()
-        val currentPosition = player.position
-        player.position += trow
-
-        message = "${player.name} moves from $currentPosition to ${player.position} "
+    fun throwDices() {
+        val result = dices.sumOf { it.getResult() }
+        getCurrentPlayer().position += result
+        nextPlayer()
     }
 
-    private fun throwDice() =  (1..6).random()
+    fun getCurrentPlayer() = players[currentPlayerIndex]
+
+    fun getPlayers() = players.toList()
+
+    private fun nextPlayer() {
+        currentPlayerIndex = if(currentPlayerIndex >= players.size) {
+            0
+        } else {
+            1
+        }
+    }
 
 }
